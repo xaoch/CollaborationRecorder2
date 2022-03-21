@@ -8,6 +8,7 @@ import ffmpeg
 import sys
 import uuid
 import time
+import signal
 
 config = configparser.ConfigParser()
 config.read(sys.argv[1])
@@ -42,7 +43,9 @@ def start_streaming(recordingId):
 
 def stop_streaming():
     global ffprocess
-    ffprocess.kill()
+    ffprocess.send_signal(signal.SIGINT)
+    ffprocess.wait()
+    #ffprocess.kill()
     print("Stoping")
     global streaming
     streaming = False
