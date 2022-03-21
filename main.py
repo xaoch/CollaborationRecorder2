@@ -6,6 +6,7 @@ import configparser
 import os
 import ffmpeg
 import sys
+import uuid
 import time
 
 config = configparser.ConfigParser()
@@ -24,10 +25,15 @@ hostname = socket.gethostname()
 IPAddr = socket.gethostbyname(hostname + ".local")
 
 
-def start_streaming():
+def start_streaming(recordingId):
+    directoryPath = os.path.join("recordings", recordingId)
+    os.mkdir(directoryPath)
+    filePath= os.path.join(directoryPath, sensorName+".mp4")
     audio = ffmpeg.input("default", f="alsa", channels=1, sample_rate=44100)
     video = ffmpeg.input("/dev/video0", f="v4l2", input_format="h264", framerate=15)
-    out = ffmpeg.output(audio, video, "http://" + IPAddr + ":8080", listen=1, f="flv", vcodec="copy")
+    out1 = ffmpeg.output(audio, video, "rtmp://localhost:1935/live/1", f="flv", vcodec="copy")
+    out2 = ffmpeg.output(audio, video, filePath, vcodec="copy")
+    out = ffmpeg.merge_outputs(out1, out2)
     global ffprocess
     global streaming
     ffprocess = ffmpeg.run_async(out)
@@ -52,12 +58,14 @@ def on_message(client, userdata, msg):
     message = msg.payload.decode()
     messagePart = message.split(",")
     if (messagePart[0] in "start"):
-        start_streaming()
+        recordingId=messagePart[1]
+        start_streaming(recordingId)
     elif (messagePart[0] in "stop"):
         stop_streaming()
     elif (messagePart[0] in "sensorstart"):
         if (messagePart[1] in sensorName):
-            start_streaming()
+            recordingId = messagePart[2]
+            start_streaming(recordingId)
     elif (messagePart[0] in "sensorstop"):
         if (messagePart[1] in sensorName):
             stop_streaming()
@@ -77,15 +85,3 @@ client.connect(ipMqttServer, int(portMqttServer), 60)
 client.on_connect = on_connect
 client.on_message = on_message
 client.loop_forever()
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
