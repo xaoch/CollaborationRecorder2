@@ -112,11 +112,11 @@ def on_message(client, userdata, msg):
 
 
 client = mqtt.Client()
-client.connect(ipMqttServer, int(portMqttServer), 60)
-client.on_connect = on_connect
-client.on_message = on_message
 while(True):
     try:
+        client.connect(ipMqttServer, int(portMqttServer), 60)
+        client.on_connect = on_connect
+        client.on_message = on_message
         client.loop_forever()
     except:
         time.sleep(1)
