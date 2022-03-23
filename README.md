@@ -57,5 +57,26 @@ sudo systemctl stop nginx.service
 sudo systemctl start nginx.service
 sudo systemctl status nginx.service
 ```
-TestingTesting
+Configure the default sound.  Look available cards:
+```
+cat /proc/asound/cards
+```
+
+You should get something like
+```
+ 0 [Headphones     ]: bcm2835_headpho - bcm2835 Headphones
+                      bcm2835 Headphones
+ 1 [ArrayUAC10     ]: USB-Audio - ReSpeaker 4 Mic Array (UAC1.0)
+                      SEEED ReSpeaker 4 Mic Array (UAC1.0) at usb-0000:01:00.0-1.2, full speed
+```
+Add the Respeaker Array as default
+```
+sudo nano /etc/asound.conf
+```
+and add:
+```
+defaults.pcm.card 1
+defaults.ctl.card 1
+```
+
 
