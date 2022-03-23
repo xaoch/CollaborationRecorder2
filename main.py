@@ -58,20 +58,33 @@ def on_connect(client, userdata, flags, rc):
 
 
 def on_message(client, userdata, msg):
+    global streaming
     message = msg.payload.decode()
     messagePart = message.split(",")
     if (messagePart[0] in "start"):
-        recordingId=messagePart[1]
-        start_streaming(recordingId)
+        if (not streaming):
+            recordingId=messagePart[1]
+            start_streaming(recordingId)
+        else:
+            print("Already streaming")
     elif (messagePart[0] in "stop"):
-        stop_streaming()
+        if (streaming):
+            stop_streaming()
+        else:
+            print("Not streaming")
     elif (messagePart[0] in "sensorstart"):
         if (messagePart[1] in sensorName):
-            recordingId = messagePart[2]
-            start_streaming(recordingId)
+            if (not streaming):
+                recordingId = messagePart[2]
+                start_streaming(recordingId)
+            else:
+                print("Already streaming")
     elif (messagePart[0] in "sensorstop"):
         if (messagePart[1] in sensorName):
-            stop_streaming()
+            if (streaming):
+                stop_streaming()
+            else:
+                print("Not Streaming")
     elif (messagePart[0] in "report alive"):
         if (streaming and ffprocess.poll() != None):
             global running
@@ -80,11 +93,30 @@ def on_message(client, userdata, msg):
     elif (messagePart[0] in "reboot"):
         print("Reboot Requested")
         if (messagePart[1] in sensorName):
+            if (streaming):
+                stop_streaming()
             os.system("sudo reboot")
+    elif (messagePart[0] in "shutdown"):
+        print("Shutdown Requested")
+        if (streaming):
+            stop_streaming()
+        os.system("sudo halt")
+    elif (messagePart[0] in "update"):
+        print("Updating Software")
+        os.system("git pull origin")
+        print("Software Updated")
+        if (streaming):
+            stop_streaming()
+        os.system("sudo reboot")
+
 
 
 client = mqtt.Client()
 client.connect(ipMqttServer, int(portMqttServer), 60)
 client.on_connect = on_connect
 client.on_message = on_message
-client.loop_forever()
+while(True):
+    try:
+        client.loop_forever()
+    except:
+        time.sleep(1)

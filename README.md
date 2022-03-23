@@ -39,11 +39,23 @@ with the following line (the location in the file is not important):
 ```
 include /etc/nginx/rtmp.conf;
  ```
-
+Now open the nginx default site configuration:
+```
+sudo nano /etc/nginx/sites-enabled/default
+```
+change the root directory
+```
+root /path/to/the/recordings/folder;
+```
+and in the location section add:
+```
+autoindex on;
+```
 Then we restart the nginx server:
 ```
 sudo systemctl stop nginx.service
 sudo systemctl start nginx.service
 sudo systemctl status nginx.service
 ```
-Run the
+
+
