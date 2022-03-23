@@ -103,7 +103,7 @@ def on_message(client, userdata, msg):
         os.system("sudo halt")
     elif (messagePart[0] in "update"):
         print("Updating Software")
-        os.system("git pull origin")
+        os.system("git pull origin master")
         print("Software Updated")
         if (streaming):
             stop_streaming()
