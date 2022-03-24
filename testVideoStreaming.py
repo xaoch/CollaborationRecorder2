@@ -12,20 +12,17 @@ strop_doa=False
 
 def getDoa():
     while True:
-        try:
-            if Mic_tuning.is_voice():
-                doa = Mic_tuning.direction
-            else:
-                doa =-1
-        except:
-            doa=-1
+        global Mic_tuning
+        if Mic_tuning.is_voice():
+            doa = Mic_tuning.direction
+        else:
+            doa =-1
         with open('doatemp.txt', 'w') as f:
             f.write(str(doa))
         os.replace('doatemp.txt','doa.txt')
         time.sleep(0.05)
         global stop_doa
         if stop_doa:
-
             break
 
 hostname = socket.gethostname()
