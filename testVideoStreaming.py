@@ -17,6 +17,7 @@ def getDoa():
             doa = Mic_tuning.direction
         else:
             doa =-1
+        print(doa)
         with open('doatemp.txt', 'w') as f:
             f.write(str(doa))
         os.replace('doatemp.txt','doa.txt')
