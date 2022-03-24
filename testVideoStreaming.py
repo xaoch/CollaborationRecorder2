@@ -11,6 +11,7 @@ def time():
     global i
     i=i+1
     print(i)
+    return i
 
 audio = ffmpeg.input("default",f="alsa",channels=1,sample_rate=44100)
 video = ffmpeg.input("/dev/video0",f="v4l2",input_format="h264",video_size=(1280, 976),framerate=15)
