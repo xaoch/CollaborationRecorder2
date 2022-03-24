@@ -31,7 +31,7 @@ def start_streaming(recordingId):
     os.mkdir(directoryPath)
     filePath= os.path.join(directoryPath, sensorName+".mp4")
     audio = ffmpeg.input("sysdefault", f="alsa", channels=1, sample_rate=44100)
-    video = ffmpeg.input("/dev/video0", f="v4l2", input_format="h264", framerate=15)
+    video = ffmpeg.input("/dev/video0", vf="drawtext=fontfile=roboto.ttf:fontsize=36:fontcolor=yellow:text='%{pts\:gmtime\:1575526882\:%A, %d, %B %Y %I\\\:%M\\\:%S %p}'",f="v4l2", input_format="h264", framerate=15)
     out1 = ffmpeg.output(audio, video, "rtmp://localhost:1935/live/1", f="flv", vcodec="copy")
     out2 = ffmpeg.output(audio, video, filePath, vcodec="copy")
     out = ffmpeg.merge_outputs(out1, out2)

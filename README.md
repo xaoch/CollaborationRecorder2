@@ -7,6 +7,7 @@
 ```
 pip install paho-mqtt
 pip install ffmpeg-python 
+pip install pyusb
 git clone https://github.com/xaoch/CollaborationRecorder2.git  
 ```
 * Activate legacy video
@@ -14,7 +15,7 @@ git clone https://github.com/xaoch/CollaborationRecorder2.git
   * Navigate to Interface Options and select Legacy camera to enable it.
   * Reboot your Raspberry Pi again.
 
-* Install ngix server
+* Install nginx server
 ```
 sudo apt-get install nginx libnginx-mod-rtmp
 sudo systemctl start nginx.service
@@ -57,6 +58,54 @@ sudo systemctl stop nginx.service
 sudo systemctl start nginx.service
 sudo systemctl status nginx.service
 ```
+
+Run this script twice to configure the speaker amplifier (see here: https://learn.adafruit.com/adafruit-speaker-bonnet-for-raspberry-pi/raspberry-pi-usage):
+Choose always yes.
+```
+curl -sS https://raw.githubusercontent.com/adafruit/Raspberry-Pi-Installer-Scripts/master/i2samp.sh | bash
+```
+
+Install the text to speech software
+```
+sudo apt-get install espeak
+sudo apt-get install sox
+
+espeak "Hello" -w testHello.wav
+sox testHello.wav Hello2.wav channels 2 fs 44100
+aplay -D pcm.dmixer Hello2.wav
+```
+
+Set the script as a service
+```
+sudo nano /lib/systemd/system/recorder.service
+```
+
+Then add:
+```
+[Unit]
+Description=Collaboration Recorder Program
+After=network-online.target
+
+[Service]
+WorkingDirectory=/home/pi/Code/CollaborationRecorder2
+User=pi
+ExecStart=python /home/pi/Code/CollaborationRecorder2/main.py /home/pi/Code/CollaborationRecorder2/config.ini
+
+[Install]
+WantedBy=multi-user.target
+```
+Run
+```
+sudo systemctl daemon-reload
+sudo systemctl enable recorder.service
+sudo reboot
+```
+
+
+
+
+
+
 Configure the default sound.  Look available cards:
 ```
 cat /proc/asound/cards
