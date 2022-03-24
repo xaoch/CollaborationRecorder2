@@ -46,5 +46,6 @@ out3 = ffmpeg.output(text, "outputText.mp4",preset="ultrafast")
 out=ffmpeg.merge_outputs(out1,out2,out3)
 print(ffmpeg.get_args(out))
 #ffmpeg.run(out)
+time.sleep(5)
 stop_doa=True
 x.join()
