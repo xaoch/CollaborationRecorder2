@@ -5,7 +5,7 @@ import socket
 hostname = socket.gethostname()
 IPAddr = socket.gethostbyname(hostname+".local" )
 print ("IP",IPAddr)
-int i=0
+i=0
 
 def time():
     global i
