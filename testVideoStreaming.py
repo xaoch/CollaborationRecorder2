@@ -1,8 +1,5 @@
 import ffmpeg
 import socket
-from tuning import Tuning
-import usb.core
-import usb.util
 import os
 import threading
 import time
@@ -12,15 +9,7 @@ strop_doa=False
 
 def getDoa():
     while True:
-        global Mic_tuning
-        if Mic_tuning.is_voice():
-            doa = Mic_tuning.direction
-        else:
-            doa =-1
-        print(doa)
-        with open('doatemp.txt', 'w') as f:
-            f.write(str(doa))
-        os.replace('doatemp.txt','doa.txt')
+        os.system("sudo python doa.py")
         time.sleep(0.05)
         global stop_doa
         if stop_doa:
@@ -30,8 +19,7 @@ hostname = socket.gethostname()
 IPAddr = socket.gethostbyname(hostname+".local" )
 print ("IP",IPAddr)
 i=0
-dev = usb.core.find(idVendor=0x2886, idProduct=0x0018)
-Mic_tuning=Tuning(dev)
+
 x = threading.Thread(target=getDoa)
 x.start()
 
