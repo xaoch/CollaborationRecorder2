@@ -4,7 +4,7 @@ import os
 import threading
 import time
 
-strop_doa=False
+stop_doa=False
 
 
 def getDoa():
