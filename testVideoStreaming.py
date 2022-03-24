@@ -17,12 +17,13 @@ def getDoa():
                 doa = Mic_tuning.direction
             else:
                 doa =-1
-        with open('doatemp.txt', 'w') as f:
-            f.write(str(doa))
+        f = open('doatemp.txt', 'w')
+        f.write(str(doa))
         os.replace('doatemp.txt','doa.txt')
         time.sleep(0.05)
         global stop_doa
         if stop_doa:
+            f.close()
             break
 
 hostname = socket.gethostname()
