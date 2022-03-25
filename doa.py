@@ -5,6 +5,7 @@ import usb.util
 import signal
 import sys
 import time
+import datetime
 
 def sigterm_handler(_signo, _stack_frame):
     # Raises SystemExit(0):
@@ -22,7 +23,7 @@ try:
     dev = usb.core.find(idVendor=0x2886, idProduct=0x0018)
     Mic_tuning=Tuning(dev)
     while True:
-        t = time.localtime()
+        t = datetime.datetime.now()
         if Mic_tuning.is_voice():
             doa = Mic_tuning.direction
         else:
