@@ -9,6 +9,7 @@ import sys
 import uuid
 import time
 import signal
+import subprocess
 
 config = configparser.ConfigParser()
 config.read(sys.argv[1])
@@ -24,7 +25,7 @@ print(portMqttServer)
 # time.sleep(30)
 hostname = socket.gethostname()
 IPAddr = socket.gethostbyname(hostname + ".local")
-
+proc=None
 
 def start_streaming(recordingId):
     directoryPath = os.path.join("recordings", recordingId)
@@ -37,14 +38,19 @@ def start_streaming(recordingId):
     out = ffmpeg.merge_outputs(out1, out2)
     global ffprocess
     global streaming
+    global proc
+    proc = subprocess.Popen(['sudo','python', 'doa.py', recordingId])
     ffprocess = ffmpeg.run_async(out)
     streaming = True
 
 
 def stop_streaming():
     global ffprocess
+    global proc
     ffprocess.send_signal(signal.SIGINT)
     ffprocess.wait()
+    proc.send_signal(signal.SIGTERM)
+    proc.wait()
     #ffprocess.kill()
     print("Stoping")
     global streaming
