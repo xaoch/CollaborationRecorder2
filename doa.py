@@ -27,9 +27,9 @@ try:
             doa = Mic_tuning.direction
         else:
             doa =-1
-        record.write(str(time)+","+str(doa))
+        record.write(str(t)+","+str(doa))
         with open('doatemp.txt', 'w') as f:
-            f.write(str(time)+","+str(doa))
+            f.write(str(t)+","+str(doa))
         os.replace('doatemp.txt','doa.txt')
         time.sleep(0.05)
 finally:
