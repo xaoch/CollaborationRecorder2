@@ -58,7 +58,7 @@ def stop_streaming():
     ffprocess.send_signal(signal.SIGINT)
     ffprocess.wait()
     proc.send_signal(signal.SIGTERM)
-    proc.wait()
+    #proc.wait()
     #ffprocess.kill()
     print("Stoping")
     global streaming
