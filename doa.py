@@ -23,7 +23,7 @@ try:
     dev = usb.core.find(idVendor=0x2886, idProduct=0x0018)
     Mic_tuning=Tuning(dev)
     while True:
-        t = datetime.datetime.now()
+        t = datetime.datetime.now().microsecond
         if Mic_tuning.is_voice():
             doa = Mic_tuning.direction
         else:
