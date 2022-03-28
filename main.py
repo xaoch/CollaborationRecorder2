@@ -40,9 +40,10 @@ def start_streaming(recordingId):
     audio = ffmpeg.input("sysdefault", f="alsa", channels=1, sample_rate=44100)
     video = ffmpeg.input("/dev/video0", f="v4l2", input_format="h264", video_size=(1280, 976), framerate=15)
     text = video.drawtext(textfile="doa.txt", reload=1, fontcolor="red", x=40, y=40, fontsize="64", escape_text=True)
-    out1 = ffmpeg.output(audio, video, "rtmp://localhost:1935/live/1", f="flv", vcodec="copy")
+    text = text.split()
+    out1 = ffmpeg.output(audio, text[0], "rtmp://localhost:1935/live/1", f="flv", preset="ultrafast")
     out2 = ffmpeg.output(audio, video, filePath, vcodec="copy")
-    out3 = ffmpeg.output(text, doaPath, preset="ultrafast")
+    out3 = ffmpeg.output(text[1], doaPath, preset="ultrafast")
     out = ffmpeg.merge_outputs(out1, out2, out3)
     global ffprocess
     global streaming
