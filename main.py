@@ -54,6 +54,7 @@ def start_streaming(recordingId):
                                  "-input_format", "h264","-i","/dev/video0","-thread_queue_size","1024",
                                  "-f", "alsa","-async","1","-channels","1","-sample_rate","44100","-i","sysdefault",
                                  "-map","0:v","-map","1:a","-vcodec", "copy", filePath])
+    steraming=True
 
 
 
