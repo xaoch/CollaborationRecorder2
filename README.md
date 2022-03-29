@@ -128,4 +128,7 @@ defaults.pcm.card 1
 defaults.ctl.card 1
 ```
 
+ffmpeg  -thread_queue_size 1024 -video_size 1920x1280 -input_format h264 -i /dev/video0 -thread_queue_size 1024\
+        -f alsa -async 1 -channels 1 -sample_rate 44100 -i "sysdefault" \
+        -map 0:v -map 1:a -vcodec copy "test.mp4" 
 
