@@ -60,7 +60,7 @@ def start_streaming(recordingId):
 def stop_streaming():
     global ffprocess
     global proc
-    ffprocess.send_signal(signal.SIGINT)
+    ffprocess.send_signal(signal.SIGTERM)
     ffprocess.wait()
     proc.send_signal(signal.SIGTERM)
     #proc.wait()
