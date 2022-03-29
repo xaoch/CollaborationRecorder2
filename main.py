@@ -50,7 +50,7 @@ def start_streaming(recordingId):
     #proc = subprocess.Popen(['sudo','python', 'doa.py', recordingId])
     #print(out)
     #ffprocess = ffmpeg.run_async(out)
-    ffprocess = subprocess.call(["ffmpeg", "-thread_queue_size", "1024", "-video_size","1080x1080",
+    ffprocess = subprocess.Popen(["ffmpeg", "-thread_queue_size", "1024", "-video_size","1080x1080",
                                  "-input_format", "h264","-i","/dev/video0","-thread_queue_size","1024",
                                  "-f", "alsa","-async","1","-channels","1","-sample_rate","44100","-i","sysdefault",
                                  "-map","0:v","-map","1:a","-vcodec", "copy", filePath])
