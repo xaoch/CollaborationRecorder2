@@ -39,25 +39,29 @@ def start_streaming(recordingId):
     filePath= os.path.join(directoryPath, sensorName+".mp4")
     stopPath = os.path.join(directoryPath, "stop.signal")
     doaPath=os.path.join(directoryPath, sensorName+"_doa.mp4")
+
+    ##Old Streaming Solution - generally out of sync
     #audio = ffmpeg.input("sysdefault", f="alsa", channels=1, sample_rate=44100)
     #video = ffmpeg.input("/dev/video0", vf="drawtext=fontfile=roboto.ttf:fontsize=36:fontcolor=yellow:text='%{pts\:gmtime\:1575526882\:%A, %d, %B %Y %I\\\:%M\\\:%S %p}'",f="v4l2", input_format="h264", framerate=15)
     #out1 = ffmpeg.output(audio, video, "rtmp://localhost:1935/live/1", f="flv", vcodec="copy")
     #out2 = ffmpeg.output(audio, video, filePath, vcodec="copy")
     #out = ffmpeg.merge_outputs(out1, out2)
-    audio = ffmpeg.input("sysdefault",  **{'async': 1},f="alsa", channels=1, sample_rate=44100)
-    video = ffmpeg.input("/dev/video0", f="v4l2", input_format="h264", video_size=(1080, 1080))
+    #audio = ffmpeg.input("sysdefault",  **{'async': 1},f="alsa", channels=1, sample_rate=44100)
+    #video = ffmpeg.input("/dev/video0", f="v4l2", input_format="h264", video_size=(1080, 1080))
     #text = video.drawtext(textfile="doa.txt", reload=1, fontcolor="red", x=40, y=40, fontsize="64", escape_text=True)
     #out1 = ffmpeg.output(audio, video, "rtmp://localhost:1935/live/1", f="flv", vcodec="copy")
-    out = ffmpeg.output(audio, video, filePath, vcodec="copy")
+    #out = ffmpeg.output(audio, video, filePath, vcodec="copy")
     #out3 = ffmpeg.output(text, doaPath, )
-    #out = ffmpeg.merge_outputs(out1, out2)
-    procDoa = subprocess.Popen(['sudo','python', 'doa.py', recordingId])
-    #print(out)
+    #out = ffmpeg.merge_outputs(out1, out2)#print(out)
     #ffprocess = ffmpeg.run_async(out)
+
+    procDoa = subprocess.Popen(['sudo','python', 'doa.py', recordingId])
+
+    outputString=filePath+"|[f=flv]rtmp://localhost:1935/live/1"
     ffprocess = subprocess.Popen(["ffmpeg", "-thread_queue_size", "1024", "-video_size","1080x1080",
                                  "-input_format", "h264","-i","/dev/video0","-thread_queue_size","1024",
                                  "-f", "alsa","-async","1","-channels","1","-sample_rate","44100","-i","sysdefault",
-                                 "-map","0:v","-map","1:a","-vcodec", "copy", filePath])
+                                 "-f","tee","-map","0:v","-map","1:a","-acodec","aac","-vcodec", "copy", outputString])
     streaming=True
 
 

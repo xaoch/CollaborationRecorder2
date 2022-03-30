@@ -132,3 +132,7 @@ ffmpeg  -thread_queue_size 1024 -video_size 1920x1280 -input_format h264 -i /dev
         -f alsa -async 1 -channels 1 -sample_rate 44100 -i "sysdefault" \
         -map 0:v -map 1:a -vcodec copy "test.mp4" 
 
+ffmpeg  -thread_queue_size 1024 -video_size 1080x1080 -input_format h264 -i /dev/video0 -thread_queue_size 1024\
+        -f alsa -async 1 -channels 1 -sample_rate 44100 -i "sysdefault" \
+        -f tee -map 0:v -map 1:a -acodec aac -vcodec copy "test.mp4|[f=flv]rtmp://localhost:1935/live/1"
+
