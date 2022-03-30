@@ -30,6 +30,7 @@ IPAddr = socket.gethostbyname(hostname + ".local")
 procDoa=None
 
 def start_streaming(recordingId):
+    global stopPath
     directoryPath = os.path.join("recordings", recordingId)
     os.mkdir(directoryPath)
     filePath= os.path.join(directoryPath, sensorName+".mp4")
