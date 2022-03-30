@@ -18,7 +18,7 @@ def sigterm_handler(_signo, _stack_frame):
 
 location=sys.argv[1]
 
-signal.signal(signal.SIGINT, sigterm_handler)
+signal.signal(signal.SIGTERM, sigterm_handler)
 
 directoryPath = os.path.join("recordings", location)
 filePath= os.path.join(directoryPath, "doa.csv")
