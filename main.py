@@ -63,7 +63,7 @@ def start_streaming(recordingId):
 
 def stop_streaming():
     global streaming
-    if streaming=True:
+    if streaming:
         global ffprocess
         global procDoa
         ffprocess.send_signal(signal.SIGINT)
