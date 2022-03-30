@@ -25,7 +25,7 @@ print(portMqttServer)
 # time.sleep(30)
 hostname = socket.gethostname()
 IPAddr = socket.gethostbyname(hostname + ".local")
-proc=None
+procDoa=None
 
 def start_streaming(recordingId):
     directoryPath = os.path.join("recordings", recordingId)
@@ -46,8 +46,8 @@ def start_streaming(recordingId):
     #out = ffmpeg.merge_outputs(out1, out2)
     global ffprocess
     global streaming
-    global proc
-    proc = subprocess.Popen(['sudo','python', 'doa.py', recordingId])
+    global procDoa
+    procDoa = subprocess.Popen(['sudo','python', 'doa.py', recordingId])
     #print(out)
     #ffprocess = ffmpeg.run_async(out)
     ffprocess = subprocess.Popen(["ffmpeg", "-thread_queue_size", "1024", "-video_size","1080x1080",
@@ -60,12 +60,12 @@ def start_streaming(recordingId):
 
 def stop_streaming():
     global ffprocess
-    global proc
+    global procDoa
     ffprocess.send_signal(signal.SIGINT)
     ffprocess.wait()
     print("Stoping Video")
-    proc.send_signal(signal.SIGINT)
-    proc.terminate()
+    procDoa.send_signal(signal.CTRL_C_EVENT)
+    procDoa.terminate()
     print("Stoping DOA")
     #ffprocess.kill()
     print("Stoping")
