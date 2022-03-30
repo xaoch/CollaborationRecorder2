@@ -63,8 +63,10 @@ def stop_streaming():
     global proc
     ffprocess.send_signal(signal.SIGINT)
     ffprocess.wait()
+    print("Stoping Video")
     proc.send_signal(signal.SIGTERM)
     proc.wait()
+    print("Stoping DOA")
     #ffprocess.kill()
     print("Stoping")
     global streaming
