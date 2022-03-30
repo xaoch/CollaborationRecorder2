@@ -69,6 +69,7 @@ def stop_streaming():
         ffprocess.send_signal(signal.SIGINT)
         ffprocess.wait()
         print("Stoping Video")
+        print(stopPath)
         stopPath.touch()
         print("Stoping DOA")
         #ffprocess.kill()
