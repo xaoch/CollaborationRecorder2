@@ -47,8 +47,8 @@ def stop_previewing():
     global previewing
     if previewing:
         global previewProcess
-        ffprocess.send_signal(signal.SIGINT)
-        ffprocess.wait()
+        previewProcess.send_signal(signal.SIGINT)
+        previewProcess.wait()
         print("Stoping Preview")
         previewing = False
     else:
