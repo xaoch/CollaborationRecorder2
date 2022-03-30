@@ -13,12 +13,12 @@ def sigterm_handler(_signo, _stack_frame):
     global stopCapturing
     print("Signal Arrived")
     # Raises SystemExit(0):
-    sys.exit(0)
+    #sys.exit(0)
     stopCapturing=True
 
 location=sys.argv[1]
 
-signal.signal(signal.SIGTERM, sigterm_handler)
+signal.signal(signal.SIGINT, sigterm_handler)
 
 directoryPath = os.path.join("recordings", location)
 filePath= os.path.join(directoryPath, "doa.csv")
