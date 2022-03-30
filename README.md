@@ -17,7 +17,8 @@ git clone https://github.com/xaoch/CollaborationRecorder2.git
 
 * Install nginx server
 ```
-sudo apt-get install nginx libnginx-mod-rtmp
+sudo apt-get install nginx libnginx-mod-rtmp 
+sudo apt-get install nginx-extras
 sudo systemctl start nginx.service
 sudo systemctl status nginx.service 
 sudo nano /etc/nginx/rtmp.conf
@@ -50,7 +51,10 @@ root /path/to/the/recordings/folder;
 ```
 and in the location section add:
 ```
-autoindex on;
+fancyindex      on;
+fancyindex_name_length  255;
+fancyindex_localtime    on;
+fancyindex_exact_size   off;
 ```
 Then we restart the nginx server:
 ```
