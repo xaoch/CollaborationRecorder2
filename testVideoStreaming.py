@@ -33,7 +33,7 @@ video = ffmpeg.input("/dev/video0", f="v4l2", input_format="h264", video_size=(1
 #out2 = ffmpeg.output(audio,video, "output.mp4", vsync=1, async=1, vcodec="copy")
 #out3 = ffmpeg.output(text, "outputText.mp4",preset="ultrafast")
 #out=ffmpeg.merge_outputs(out1,out2,out3)
-out = ffmpeg.output(audio, video, "output.mp4", vcodec="copy")
+out = ffmpeg.output(audio, video, "recordings/output.mp4", vcodec="copy")
 print(ffmpeg.get_args(out))
 proc=ffmpeg.run_async(out)
 time.sleep(5)
