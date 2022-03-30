@@ -47,7 +47,7 @@ def start_streaming(recordingId):
     global ffprocess
     global streaming
     global proc
-    #proc = subprocess.Popen(['sudo','python', 'doa.py', recordingId])
+    proc = subprocess.Popen(['sudo','python', 'doa.py', recordingId])
     #print(out)
     #ffprocess = ffmpeg.run_async(out)
     ffprocess = subprocess.Popen(["ffmpeg", "-thread_queue_size", "1024", "-video_size","1080x1080",
@@ -63,8 +63,8 @@ def stop_streaming():
     global proc
     ffprocess.send_signal(signal.SIGINT)
     ffprocess.wait()
-    #proc.send_signal(signal.SIGTERM)
-    #proc.wait()
+    proc.send_signal(signal.SIGTERM)
+    proc.wait()
     #ffprocess.kill()
     print("Stoping")
     global streaming
