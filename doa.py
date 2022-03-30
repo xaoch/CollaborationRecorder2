@@ -13,6 +13,7 @@ location=sys.argv[1]
 directoryPath = os.path.join("recordings", location)
 filePath= os.path.join(directoryPath, "doa.csv")
 stopPath= os.path.join(directoryPath, "stop.signal")
+print(stopPath)
 
 record = open(filePath,'w')
 stopPath = Path(stopPath)
@@ -28,4 +29,5 @@ while True:
     time.sleep(0.05)
     if stopPath.is_file():
        record.close()
+       print("Closing DOA file")
        break
