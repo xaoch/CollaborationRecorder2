@@ -65,7 +65,7 @@ def stop_streaming():
     ffprocess.wait()
     print("Stoping Video")
     proc.send_signal(signal.SIGTERM)
-    proc.wait(timeout=0.1)
+    proc.kill()
     print("Stoping DOA")
     #ffprocess.kill()
     print("Stoping")
