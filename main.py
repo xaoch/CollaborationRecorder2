@@ -10,6 +10,7 @@ import uuid
 import time
 import signal
 import subprocess
+from pathlib import Path
 
 config = configparser.ConfigParser()
 config.read(sys.argv[1])
@@ -20,6 +21,7 @@ sensorName = config["DEFAULT"]["SensorName"]
 streaming = False
 ffprocess = None
 running = "Alive"
+stopPath=None
 
 print(portMqttServer)
 # time.sleep(30)
@@ -31,6 +33,7 @@ def start_streaming(recordingId):
     directoryPath = os.path.join("recordings", recordingId)
     os.mkdir(directoryPath)
     filePath= os.path.join(directoryPath, sensorName+".mp4")
+    stopPath = os.path.join(directoryPath, "stop.signal")
     doaPath=os.path.join(directoryPath, sensorName+"_doa.mp4")
     #audio = ffmpeg.input("sysdefault", f="alsa", channels=1, sample_rate=44100)
     #video = ffmpeg.input("/dev/video0", vf="drawtext=fontfile=roboto.ttf:fontsize=36:fontcolor=yellow:text='%{pts\:gmtime\:1575526882\:%A, %d, %B %Y %I\\\:%M\\\:%S %p}'",f="v4l2", input_format="h264", framerate=15)
@@ -59,18 +62,20 @@ def start_streaming(recordingId):
 
 
 def stop_streaming():
-    global ffprocess
-    global procDoa
-    ffprocess.send_signal(signal.SIGINT)
-    ffprocess.wait()
-    print("Stoping Video")
-    procDoa.send_signal(signal.CTRL_C_EVENT)
-    procDoa.terminate()
-    print("Stoping DOA")
-    #ffprocess.kill()
-    print("Stoping")
     global streaming
-    streaming = False
+    if streaming=True:
+        global ffprocess
+        global procDoa
+        ffprocess.send_signal(signal.SIGINT)
+        ffprocess.wait()
+        print("Stoping Video")
+        stopPath.touch()
+        print("Stoping DOA")
+        #ffprocess.kill()
+        print("Stoping")
+        streaming = False
+    else:
+        print("Not streaming")
 
 
 def on_connect(client, userdata, flags, rc):
