@@ -11,6 +11,7 @@ stopCapturing=False
 
 def sigterm_handler(_signo, _stack_frame):
     global stopCapturing
+    print("Signal Arrived")
     # Raises SystemExit(0):
     sys.exit(0)
     stopCapturing=True
