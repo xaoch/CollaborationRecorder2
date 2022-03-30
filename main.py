@@ -19,7 +19,10 @@ ipMqttServer = config["DEFAULT"]["MQTTServerIp"]
 portMqttServer = config["DEFAULT"]["MQTTServerPort"]
 sensorName = config["DEFAULT"]["SensorName"]
 streaming = False
+previewing = False
+
 ffprocess = None
+previewProcess = None
 running = "Alive"
 stopPath=None
 
@@ -28,6 +31,28 @@ print(portMqttServer)
 hostname = socket.gethostname()
 IPAddr = socket.gethostbyname(hostname + ".local")
 procDoa=None
+
+def start_previewing():
+    global previewProcess
+    global previewing
+
+    outputString="rtmp://localhost:1935/live/1"
+    previewProcess = subprocess.Popen(["ffmpeg", "-thread_queue_size", "1024", "-video_size","1080x1080",
+                                 "-input_format", "h264","-i","/dev/video0","-thread_queue_size","1024",
+                                 "-f", "alsa","-async","1","-channels","1","-sample_rate","44100","-i","sysdefault",
+                                 "-map","0:v","-map","1:a","-acodec","aac","-vcodec", "copy", "-f","flv",outputString])
+    previewing=True
+
+def stop_previewing():
+    global previewing
+    if previewing:
+        global previewProcess
+        ffprocess.send_signal(signal.SIGINT)
+        ffprocess.wait()
+        print("Stoping Preview")
+        previewing = False
+    else:
+        print("Not previewing")
 
 def start_streaming(recordingId):
     global stopPath
@@ -145,6 +170,16 @@ def on_message(client, userdata, msg):
         if (streaming):
             stop_streaming()
         os.system("sudo reboot")
+    elif (messagePart[0] in "preview"):
+        if (not streaming and not previewing):
+            start_previewing()
+        else:
+            print("Already streaming or previewing")
+    elif (messagePart[0] in "stop_preview"):
+        if (not streaming and previewing):
+            stop_previewing()
+        else:
+            print("Nor previewing or streaming")
 
 
 
