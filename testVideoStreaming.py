@@ -4,6 +4,7 @@ import os
 import threading
 import time
 import signal
+import subprocess
 
 stop_doa=False
 
@@ -35,7 +36,11 @@ video = ffmpeg.input("/dev/video0", f="v4l2", input_format="h264", video_size=(1
 #out=ffmpeg.merge_outputs(out1,out2,out3)
 out = ffmpeg.output(audio, video, "recordings/output.mp4", vcodec="copy")
 print(ffmpeg.get_args(out))
-proc=ffmpeg.run_async(out)
+#proc=ffmpeg.run_async(out)
+proc = subprocess.Popen(["ffmpeg", "-thread_queue_size", "1024", "-video_size","1080x1080",
+                                 "-input_format", "h264","-i","/dev/video0","-thread_queue_size","1024",
+                                 "-f", "alsa","-async","1","-channels","1","-sample_rate","44100","-i","sysdefault",
+                                 "-map","0:v","-map","1:a","-vcodec", "copy", "recordings/output.mp4"])
 time.sleep(5)
 proc.send_signal(signal.SIGINT)
 proc.wait()
