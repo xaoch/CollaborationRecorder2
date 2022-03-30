@@ -35,9 +35,10 @@ video = ffmpeg.input("/dev/video0", f="v4l2", input_format="h264", video_size=(1
 #out=ffmpeg.merge_outputs(out1,out2,out3)
 out = ffmpeg.output(audio, video, "output.mp4", vcodec="copy")
 print(ffmpeg.get_args(out))
-proc=ffmpeg.run(out)
+proc=ffmpeg.run_async(out)
 time.sleep(5)
 proc.send_signal(signal.SIGINT)
 proc.wait()
+print("Stoping")
 #stop_doa=True
 #x.join()
