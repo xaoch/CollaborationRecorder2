@@ -20,8 +20,8 @@ IPAddr = socket.gethostbyname(hostname+".local" )
 print ("IP",IPAddr)
 i=0
 
-x = threading.Thread(target=getDoa)
-x.start()
+#x = threading.Thread(target=getDoa)
+#x.start()
 
 #audio = ffmpeg.input("default",f="alsa",channels=1,sample_rate=44100)
 audio = ffmpeg.input("sysdefault",  **{'async': 1},f="alsa", channels=1, sample_rate=44100)
