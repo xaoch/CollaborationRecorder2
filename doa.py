@@ -7,9 +7,13 @@ import sys
 import time
 import datetime
 
+stopCapturing=False
+
 def sigterm_handler(_signo, _stack_frame):
+    global stopCapturing
     # Raises SystemExit(0):
     sys.exit(0)
+    stopCapturing=True
 
 location=sys.argv[1]
 
@@ -33,6 +37,9 @@ try:
             f.write(str(t)+","+str(doa)+"\n")
         os.replace('doatemp.txt','doa.txt')
         time.sleep(0.05)
+        if stopCapturing:
+            record.close()
+            break;
 finally:
     record.close()
     print("Goodbye")
