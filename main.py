@@ -31,6 +31,9 @@ procDoa=None
 
 def start_streaming(recordingId):
     global stopPath
+    global ffprocess
+    global streaming
+    global procDoa
     directoryPath = os.path.join("recordings", recordingId)
     os.mkdir(directoryPath)
     filePath= os.path.join(directoryPath, sensorName+".mp4")
@@ -48,9 +51,6 @@ def start_streaming(recordingId):
     out = ffmpeg.output(audio, video, filePath, vcodec="copy")
     #out3 = ffmpeg.output(text, doaPath, )
     #out = ffmpeg.merge_outputs(out1, out2)
-    global ffprocess
-    global streaming
-    global procDoa
     procDoa = subprocess.Popen(['sudo','python', 'doa.py', recordingId])
     #print(out)
     #ffprocess = ffmpeg.run_async(out)
