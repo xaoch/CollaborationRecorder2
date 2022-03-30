@@ -3,6 +3,7 @@ import socket
 import os
 import threading
 import time
+import signal
 
 stop_doa=False
 
@@ -34,7 +35,9 @@ video = ffmpeg.input("/dev/video0", f="v4l2", input_format="h264", video_size=(1
 #out=ffmpeg.merge_outputs(out1,out2,out3)
 out = ffmpeg.output(audio, video, "output.mp4", vcodec="copy")
 print(ffmpeg.get_args(out))
-#ffmpeg.run(out)
-#time.sleep(5)
+proc=ffmpeg.run(out)
+time.sleep(5)
+proc.send_signal(signal.SIGINT)
+proc.wait()
 #stop_doa=True
 #x.join()
