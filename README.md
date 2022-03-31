@@ -10,6 +10,13 @@ pip install ffmpeg-python
 pip install pyusb
 git clone https://github.com/xaoch/CollaborationRecorder2.git  
 ```
+
+* Configure the recorder.  Go to the CollaborationRecorder2 folder and do
+```
+mkdir config
+cp config.ini config/config.ini
+```
+
 * Activate legacy video
   * Run sudo raspi-config.
   * Navigate to Interface Options and select Legacy camera to enable it.
@@ -104,7 +111,6 @@ sudo systemctl daemon-reload
 sudo systemctl enable recorder.service
 sudo reboot
 ```
-
 
 
 

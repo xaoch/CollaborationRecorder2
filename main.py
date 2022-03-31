@@ -151,7 +151,12 @@ def on_message(client, userdata, msg):
         if (streaming and ffprocess.poll() != None):
             global running
             running = "Problem"
-        client.publish("recorder/heartbeat", sensorName + "," + IPAddr + "," + str(streaming) + "," + running)
+        status="None"
+        if previewing:
+            status="Previewing"
+        if streaming:
+            status="Recording"
+        client.publish("recorder/heartbeat", sensorName + "," + IPAddr + "," + status + "," + running)
     elif (messagePart[0] in "reboot"):
         print("Reboot Requested")
         if (messagePart[1] in sensorName):
