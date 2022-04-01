@@ -21,13 +21,7 @@ num2words = {1: 'One', 2: 'Two', 3: 'Three', 4: 'Four', 5: 'Five', \
             90: 'Ninety', 0: 'Zero'}
 
 def n2w(n):
-        try:
-            print num2words[n]
-        except KeyError:
-            try:
-                print num2words[n-n%10] + num2words[n%10].lower()
-            except KeyError:
-                print 'Number out of range'
+        return num2words[n-n%10] + num2words[n%10].lower()
 
 config = configparser.ConfigParser()
 config.read(sys.argv[1])
@@ -50,7 +44,7 @@ while(IPAddr=="127.0.0.1"):
     hostname = socket.gethostname()
     IPAddr = socket.gethostbyname(hostname + ".local")
 sensorNumber = IPAddr[-2:]
-sensorName = n2w(sensorNumber)
+sensorName = n2w(int(sensorNumber))
 procDoa=None
 
 def update():
