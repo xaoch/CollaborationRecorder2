@@ -234,6 +234,11 @@ def on_message(client, userdata, msg):
                 stop_previewing()
             else:
                 print("Nor previewing or streaming")
+    elif (messagePart[0] in "sensor_shutdown"):
+        if (messagePart[1] in sensorName):
+            if (streaming):
+                stop_streaming()
+            os.system("sudo halt")
 
 
 
