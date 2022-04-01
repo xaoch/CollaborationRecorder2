@@ -27,9 +27,11 @@ running = "Alive"
 stopPath=None
 
 print(portMqttServer)
-# time.sleep(30)
 hostname = socket.gethostname()
 IPAddr = socket.gethostbyname(hostname + ".local")
+while(IPAdress=="127.0.0.1"):
+    hostname = socket.gethostname()
+    IPAddr = socket.gethostbyname(hostname + ".local")
 procDoa=None
 
 def start_previewing():
