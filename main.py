@@ -96,8 +96,8 @@ def start_streaming(recordingId):
     os.mkdir(directoryPath)
     filePath= os.path.join(directoryPath, sensorName+".mp4")
     stopPath = os.path.join(directoryPath, "stop.signal")
-    doaPath=os.path.join(directoryPath, sensorName+"_doa.mp4")
 
+    #doaPath=os.path.join(directoryPath, sensorName+"_doa.mp4")
     ##Old Streaming Solution - generally out of sync
     #audio = ffmpeg.input("sysdefault", f="alsa", channels=1, sample_rate=44100)
     #video = ffmpeg.input("/dev/video0", vf="drawtext=fontfile=roboto.ttf:fontsize=36:fontcolor=yellow:text='%{pts\:gmtime\:1575526882\:%A, %d, %B %Y %I\\\:%M\\\:%S %p}'",f="v4l2", input_format="h264", framerate=15)
