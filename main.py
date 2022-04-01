@@ -29,7 +29,7 @@ stopPath=None
 print(portMqttServer)
 hostname = socket.gethostname()
 IPAddr = socket.gethostbyname(hostname + ".local")
-while(IPAdress=="127.0.0.1"):
+while(IPAddr=="127.0.0.1"):
     hostname = socket.gethostname()
     IPAddr = socket.gethostbyname(hostname + ".local")
 procDoa=None
