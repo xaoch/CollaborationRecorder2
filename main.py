@@ -21,7 +21,10 @@ num2words = {1: 'One', 2: 'Two', 3: 'Three', 4: 'Four', 5: 'Five', \
             90: 'Ninety', 0: 'Zero'}
 
 def n2w(n):
-        return num2words[n-n%10] + num2words[n%10].lower()
+        if n<21:
+            return num2words[n]
+        else:
+            return num2words[n-n%10] + num2words[n%10].lower()
 
 config = configparser.ConfigParser()
 config.read(sys.argv[1])
