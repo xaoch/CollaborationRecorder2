@@ -136,20 +136,20 @@ def on_message(client, userdata, msg):
             stop_streaming()
         else:
             print("Not streaming")
-    elif (messagePart[0] in "sensorstart"):
+    elif (messagePart[0] in "sensor_start"):
         if (messagePart[1] in sensorName):
             if (not streaming):
                 recordingId = messagePart[2]
                 start_streaming(recordingId)
             else:
                 print("Already streaming")
-    elif (messagePart[0] in "sensorstop"):
+    elif (messagePart[0] in "sensor_stop"):
         if (messagePart[1] in sensorName):
             if (streaming):
                 stop_streaming()
             else:
                 print("Not Streaming")
-    elif (messagePart[0] in "report alive"):
+    elif (messagePart[0] in "report_alive"):
         if (streaming and ffprocess.poll() != None):
             global running
             running = "Problem"
@@ -187,6 +187,18 @@ def on_message(client, userdata, msg):
             stop_previewing()
         else:
             print("Nor previewing or streaming")
+    elif (messagePart[0] in "sensor_preview"):
+        if (messagePart[1] in sensorName):
+            if (not streaming and not previewing):
+                start_previewing()
+            else:
+                print("Already streaming or previewing")
+    elif (messagePart[0] in "sensor_preview_stop"):
+        if (messagePart[1] in sensorName):
+            if (not streaming and previewing):
+                stop_previewing()
+            else:
+                print("Nor previewing or streaming")
 
 
 
