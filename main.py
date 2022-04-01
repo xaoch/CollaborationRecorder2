@@ -34,6 +34,19 @@ while(IPAddr=="127.0.0.1"):
     IPAddr = socket.gethostbyname(hostname + ".local")
 procDoa=None
 
+def update():
+    global previewing
+    global streaming
+    global running
+    if (streaming and ffprocess.poll() != None):
+        running = "Problem"
+    status = "None"
+    if previewing:
+        status = "Previewing"
+    if streaming:
+        status = "Recording"
+    client.publish("recorder/update", sensorName + "," + IPAddr + "," + status + "," + running)
+
 def start_previewing():
     global previewProcess
     global previewing
@@ -44,6 +57,7 @@ def start_previewing():
                                  "-f", "alsa","-async","1","-channels","1","-sample_rate","44100","-i","sysdefault",
                                  "-map","0:v","-map","1:a","-acodec","aac","-vcodec", "copy", "-f","flv",outputString])
     previewing=True
+    update()
 
 def stop_previewing():
     global previewing
@@ -55,6 +69,7 @@ def stop_previewing():
         previewing = False
     else:
         print("Not previewing")
+    update()
 
 def start_streaming(recordingId):
     global stopPath
@@ -90,6 +105,9 @@ def start_streaming(recordingId):
                                  "-f", "alsa","-async","1","-channels","1","-sample_rate","44100","-i","sysdefault",
                                  "-f","tee","-map","0:v","-map","1:a","-acodec","aac","-vcodec", "copy", outputString])
     streaming=True
+    update()
+
+
 
 
 
@@ -113,6 +131,7 @@ def stop_streaming():
         streaming = False
     else:
         print("Not streaming")
+    update()
 
 
 def on_connect(client, userdata, flags, rc):
