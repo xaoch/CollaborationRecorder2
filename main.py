@@ -47,6 +47,7 @@ while(IPAddr=="127.0.0.1"):
     hostname = socket.gethostname()
     IPAddr = socket.gethostbyname(hostname + ".local")
 sensorNumber = IPAddr[-2:]
+sensorNumber=sensorNumber.replace(".","")
 sensorName = n2w(int(sensorNumber))
 procDoa=None
 
