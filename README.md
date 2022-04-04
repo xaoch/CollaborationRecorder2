@@ -111,9 +111,10 @@ sudo systemctl daemon-reload
 sudo systemctl enable recorder.service
 sudo reboot
 ```
-
-
-
+* Configure Camera
+```
+v4l2-ctl --set-ctrl=auto_exposure=1
+```
 
 
 Configure the default sound.  Look available cards:
