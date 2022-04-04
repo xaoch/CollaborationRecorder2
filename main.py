@@ -43,7 +43,7 @@ stopPath=None
 print(portMqttServer)
 hostname = socket.gethostname()
 IPAddr = socket.gethostbyname(hostname + ".local")
-while(IPAddr=="127.0.0.1"):
+while("192.168.50" in IPAddr):
     hostname = socket.gethostname()
     IPAddr = socket.gethostbyname(hostname + ".local")
 sensorNumber = IPAddr[-2:]
