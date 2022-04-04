@@ -31,7 +31,8 @@ config.read(sys.argv[1])
 
 ipMqttServer = config["DEFAULT"]["MQTTServerIp"]
 portMqttServer = config["DEFAULT"]["MQTTServerPort"]
-#sensorName = config["DEFAULT"]["SensorName"]
+sensorName = config["DEFAULT"]["SensorName"]
+IPAddr=config["DEFAULT"]["SensorIp"]
 streaming = False
 previewing = False
 
@@ -39,17 +40,6 @@ ffprocess = None
 previewProcess = None
 running = "Alive"
 stopPath=None
-
-print(portMqttServer)
-hostname = socket.gethostname()
-IPAddr = socket.gethostbyname(hostname + ".local")
-while("192.168.50" not in IPAddr):
-    hostname = socket.gethostname()
-    IPAddr = socket.gethostbyname(hostname + ".local")
-    print(IPAddr)
-sensorNumber = IPAddr[-2:]
-sensorNumber=sensorNumber.replace(".","")
-sensorName = n2w(int(sensorNumber))
 procDoa=None
 
 def update():
