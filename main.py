@@ -235,6 +235,7 @@ def on_message(client, userdata, msg):
 
 
 client = mqtt.Client()
+os.system("v4l2-ctl --set-ctrl=auto_exposure=1")
 while(True):
     try:
         client.connect(ipMqttServer, int(portMqttServer), 60)
